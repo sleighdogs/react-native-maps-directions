@@ -74,7 +74,7 @@ class MapViewDirections extends Component {
 			mode = 'DRIVING',
 			language = 'en',
 			optimizeWaypoints,
-			directionsServiceBaseUrl = 'https://maps.googleapis.com/maps/api/directions/json',
+			directionsServiceBaseUrl,
 			region,
 		} = props;
 
@@ -122,14 +122,21 @@ class MapViewDirections extends Component {
 	}
 
 	fetchRoute(directionsServiceBaseUrl, origin, waypoints, destination, apikey, mode, language, region) {
+		let latLonStartPair = origin.split(',')
+		let startLat = latLonStartPair[0]
+		let startLon = latLonStartPair[1]
+
+		let latLonEndPair = destination.split(",")
+		let endLat = latLonEndPair[0]
+		let endLon = latLonEndPair[1]
 
 		// Define the URL to call. Only add default parameters to the URL if it's a string.
 		let url = directionsServiceBaseUrl;
 		if (typeof (directionsServiceBaseUrl) === 'string') {
-			url += `?origin=${origin}&waypoints=${waypoints}&destination=${destination}&key=${apikey}&mode=${mode.toLowerCase()}&language=${language}&region=${region}&departure_time=now`;
+			url += `?startLat=${startLat}&startLon=${startLon}&endLat=${endLat}&endLon=${endLon}`;
 		}
 
-		return fetch(url)
+		return fetch(url, { headers: { "Authorization": apikey } })
 			.then(response => response.json())
 			.then(json => {
 
@@ -222,7 +229,7 @@ MapViewDirections.propTypes = {
 	language: PropTypes.string,
 	resetOnChange: PropTypes.bool,
 	optimizeWaypoints: PropTypes.bool,
-	directionsServiceBaseUrl: PropTypes.string,
+	directionsServiceBaseUrl: PropTypes.string.isRequired,
 	region: PropTypes.string,
 };
 
