@@ -35,6 +35,10 @@ declare module "react-native-maps-directions" {
     | "TRANSIT"
     | "WALKING";
 
+  export type MapViewDirectionsPrecision =
+    | "high"
+    | "low";
+
   export interface MapViewDirectionsProps {
     /**
      * The origin location to start routing from.
@@ -70,6 +74,12 @@ declare module "react-native-maps-directions" {
      */
     mode?: MapViewDirectionsMode;
     /**
+     * The precision to draw the polyline with.
+     * Allowed values are "high", and "low".
+     * Defaults to "low"
+     */
+    precision?: MapViewDirectionsPrecision;
+    /**
      * The language to use when calculating directions.
      */
     language?: string;
@@ -86,6 +96,13 @@ declare module "react-native-maps-directions" {
      * you will be billed for a higher rate by Google
      */
     optimizeWaypoints?: boolean;
+    /**
+     * Directions API has a limit of 10 or 25 (depends on the billing plan)
+     * waypoints per route. So waypoints array size is limited to those numbers.
+     * Set this to true if you would like to automatically split waypoints to
+     * multiple routes and by that avoid waypoints limit.
+     */
+    splitWaypoints?: boolean;
     /**
      * Base URL of the Directions Service (API) you are using.
      * By default the Google Directions API is used
